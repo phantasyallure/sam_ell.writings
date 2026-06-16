@@ -58,4 +58,4 @@ export async function writeStories(stories, sha) {
     throw new Error(`GitHub write failed: ${res.status} ${text}`);
   }
   return res.json();
-}
+} 
