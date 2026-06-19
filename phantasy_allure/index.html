@@ -254,23 +254,12 @@
   @media (max-width: 700px) {
     .hero-bg{
       inset: 0;
-      width: 140%;
+      width: 100%;
       height: 100%;
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
       background-position: center center;
-      animation: heroSlideMobile 18s ease-in-out infinite alternate;
-    }
-    @keyframes heroSlideMobile{
-      0%{
-        transform: translateX(0%);
-      }
-      50%{
-        transform: translateX(-15%);
-      }
-      100%{
-        transform: translateX(-30%);
-      }
+      animation: kenburns 22s ease-in-out infinite alternate;
     }
     .hero{
       min-height:100vh;
