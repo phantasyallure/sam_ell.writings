@@ -22,8 +22,12 @@
 
   /* ══ HERO ══ */
   .hero {
-    width: 100%; height: 100vh; height: 100dvh; min-height: 600px;
-    position: relative; overflow: hidden;
+    width: 100%;
+    height: 100vh; /* fallback */
+    height: 100dvh; /* mobile-dvh fix */
+    min-height: 600px;
+    position: relative;
+    overflow: hidden;
     background: var(--navy);
     display: flex;
     align-items: center;
@@ -44,6 +48,13 @@
   @keyframes panImage {
     0%   { background-position: 0% center; }
     100% { background-position: 100% center; }
+  }
+  /* Ensure carousel/slide elements also fill the hero area */
+  .hero-slide, .slide, .swiper-slide {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
   }
   .hero-vignette {
     position: absolute; inset: 0; pointer-events: none;
@@ -112,7 +123,8 @@
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center; padding: 2.4rem 2.5rem;
-    width: min(100%, 900px);
+    width: 90%;
+    max-width: 900px;
     background: rgba(13,15,26,0.52);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 30px;
@@ -290,17 +302,19 @@
       background-position: center center;
       animation: panImage 25s ease-in-out infinite alternate;
     }
-    .hero{
-      min-height:100dvh;
-    }
-    .hero-content{
-      width:100%;
-      padding:1.5rem 1.2rem 2rem;
-      text-align:center;
-    }
-    .hero h1{
-      font-size:clamp(2rem,8vw,3rem);
-      line-height:1.1;
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      /* support both background-image and img fallback */
+      object-fit: cover;
+      background-image: url("data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAM0B34DASIAAhEBAxEB/8QAHAAAAQUBAQEAAAAAAAAAAAAABAABAgMFBgcI/8QATRAAAgEDAwIFAgMGBAQEBAAPAQIDAAQRBRIhMUEGEyJRYRRxMoGRByNCUqGxFWLB0SQzcuEWQ4LwNFOS8QglY6KyRHODwhcmNUV0s//EABoBAAMBAQEBAAAAAAAAAAAAAAABAgMEBQb/xAA0EQACAgEDAgQDCAMBAQEBAQAAAQIRAxIhMQRBEyJRYXGB8AUykaGxwdHhFCPxQlIVMyT/2gAMAwEAAhEDEQA/APjQ01OelN3q2AhT0hTgU0A1N3pyaYUMB6WKfp96shglmLeWjMFGWIGQo9z7U3sCK1GTVoVmOOOeBzirvIePIxzVckThdzcDtmrTVUS0wdqQBJp8DGaas6oosIGPbFW29lc3Ucs0MErwwANPIqErECcAsR0GeOaGzVsU0sKuIpXTzFKPtYjcp6g+4q27EtiqlSNIVIxVJRnAHWm704/Dx+dCQhLtOcnHHFRp6dVOadWISDNSOF7ZNWtC0cUT5QiUEgK2SMHHPtTXEsbRwpHAsbRqQ7Aklznqfb24q6pC5KjnqeBU8KE45Y/0qv560/I5PFCGIj3phjuM0VbxG6lYT3cMBCF985bnA4UYBOT0Hahug4oAfc6jgbcj2phyMGlg5px80CJCMlaYxkDNdL4U1Dw/Y2OpJrGkyahJcWjR2bCfy/pps8SH+bA7VgXD5b3Has4ybk01x+ZcopRTT5BmHNNxUm61E5HFVRI1SxTEc8VI9KSAjU0AJAJA9yai2M+nOPmpAEjHYc9KpcgM3PNSwCBt/Oon9amgzxVIREKfan29hXV6X4N1u+8H3/i6Gy36Tp86W9xLuAIkcZUbepHue1c1KNhK7ee+apRVBuikKSCRjipzCMsPKDbcDO7370xznBpwuQx4wPeihCVMjNWLHxmoLlCpyCCM8H+lEIQWOOlVFITBnU7qQA7+3FEyhDt2rggcnOcn3+KqKHrSoCAAqWBnipAU4GDmmkBHGCD1q2NBwxAJz0qBPbNTjODjNXETLztVGkIBJyAvsT3/ACoNqPmLNaIzbdpO1TkZ4+PzoPG [truncated]");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      animation: panImage 25s ease-in-out infinite alternate;
+      will-change: background-position;
     }
     .hero-subtitle{
       font-size:0.9rem;
