@@ -248,6 +248,54 @@
     .stories-grid { grid-template-columns: 1fr 1fr; }
     .story-excerpt { display: none; }
   }
+  @media (max-width: 700px) {
+    .hero-bg{
+      inset: 0;
+      width: 140%;
+      height: 100%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center center;
+      animation: heroSlideMobile 18s ease-in-out infinite alternate;
+    }
+    @keyframes heroSlideMobile{
+      0%{
+        transform: translateX(0%);
+      }
+      50%{
+        transform: translateX(-15%);
+      }
+      100%{
+        transform: translateX(-30%);
+      }
+    }
+    .hero{
+      min-height:100vh;
+    }
+    .hero-content{
+      width:100%;
+      padding:1.5rem;
+      text-align:center;
+    }
+    .hero h1{
+      font-size:clamp(2rem,8vw,3rem);
+      line-height:1.1;
+    }
+    .hero-subtitle{
+      font-size:0.9rem;
+      line-height:1.6;
+    }
+  }
+  img{
+    max-width:100%;
+    height:auto;
+  }
+  section{
+    overflow:hidden;
+  }
+  *{
+    word-wrap:break-word;
+  }
 </style>
 </head>
 <body>
