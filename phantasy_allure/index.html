@@ -46,8 +46,8 @@
     will-change: background-position;
   }
   @keyframes panImage {
-    0%   { background-position: 0% center; }
-    100% { background-position: 100% center; }
+    0%   { transform: translateX(-6%); }
+    100% { transform: translateX(6%); }
   }
   /* Ensure carousel/slide elements also fill the hero area */
   .hero-slide, .slide, .swiper-slide {
@@ -69,9 +69,9 @@
     animation: shimmer 6s ease-in-out infinite alternate;
   }
   /* fallback img inside hero-bg when CSS backgrounds misrender on some phones */
-  .hero-bg-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:0; }
+  .hero-bg-img{ position:absolute; inset:0; width:110%; height:100%; left:-5%; object-fit:cover; display:block; z-index:0; animation: panImage 25s ease-in-out infinite alternate; will-change: transform; }
   @keyframes shimmer { 0%{ opacity:0.5; } 100%{ opacity:1; } }
-  #hero-canvas { position: absolute; inset: 0; pointer-events: none; width:100%; height:100%; }
+  #hero-canvas { position: absolute; inset: 0; pointer-events: none; width:100%; height:100%; z-index:5; }
 
   .pulse-ring {
     position: absolute; border-radius: 50%;
@@ -379,14 +379,24 @@
     <a class="hero-cta" href="#library">Enter the library</a>
   </div>
   <script>
-    // Create an <img> fallback using the same data-url from CSS background-image
-    document.addEventListener('DOMContentLoaded', function(){
-      try{
-        var bg = document.querySelector('.hero-bg');
-        if(!bg) return;
-        var style = getComputedStyle(bg).backgroundImage || '';
-        if(style && style.indexOf('url(') === 0){
-          var url = style.slice(4, -1).replace(/^"|"$/g, '');
+    // Create an <img> fallback using the same data-url from CSS background-image or from the <style> text
+      document.addEventListener('DOMContentLoaded', function(){
+        try{
+          var bg = document.querySelector('.hero-bg');
+          if(!bg) return;
+          var url = '';
+          try{ var style = getComputedStyle(bg).backgroundImage || ''; if(style && style.indexOf('url(') === 0){ url = style.slice(4, -1).replace(/^"|"$/g, ''); } }catch(e){}
+
+          // If computed style didn't expose the data URI (some phones ignore huge data URIs in CSS), scan inline <style> tags
+          if(!url || url.indexOf('data:') !== 0){
+            var re = /url\(\s*\"?(data:image\/[a-zA-Z]+;base64,[^\"\)]+)\"?\s*\)/;
+            var styles = document.querySelectorAll('style');
+            for(var i=0;i<styles.length;i++){
+              var m = styles[i].textContent.match(re);
+              if(m && m[1]){ url = m[1]; break; }
+            }
+          }
+
           if(url && url.indexOf('data:') === 0){
             var img = document.createElement('img');
             img.className = 'hero-bg-img';
@@ -395,9 +405,8 @@
             // ensure the image is placed behind hero content
             bg.insertBefore(img, bg.firstChild);
           }
-        }
-      }catch(e){console && console.warn && console.warn('hero-bg fallback failed', e);}  
-    });
+        }catch(e){console && console.warn && console.warn('hero-bg fallback failed', e);}  
+      });
   </script>
 
   <!-- debug badge: shows computed hero-bg info (remove after troubleshooting) -->
