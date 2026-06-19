@@ -20,75 +20,169 @@
   html { scroll-behavior: smooth; height: 100%; }
   body { background: var(--navy); color: var(--smoke); font-family: "Lato", sans-serif; min-height: 100vh; height: 100%; overflow-x: hidden; }
 
-  /* ══ HERO ══ */
+  /* â•â• HERO â•â• */
   .hero {
-    width: 100%; height: 100vh; min-height: 600px;
-    position: relative; overflow: hidden;
+    width: 100%;
+    height: 100vh; /* fallback */
+    height: 100dvh; /* mobile-dvh fix */
+    min-height: 600px;
+    position: relative;
+    overflow: hidden;
     background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .hero-bg {
     position: absolute;
-    inset: -8% -5%; width: 110%; height: 116%;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMidYMid slice' viewBox='0 0 1200 800'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%230d0f1a'/%3E%3Cstop offset='55%25' stop-color='%232b0f31'/%3E%3Cstop offset='100%25' stop-color='%235a1b47'/%3E%3C/linearGradient%3E%3CradialGradient id='h' cx='0.3' cy='0.3' r='0.8'%3E%3Cstop offset='0%25' stop-color='rgba(201,168,76,0.35)'/%3E%3Cstop offset='100%25' stop-color='transparent'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='1200' height='800' fill='url(%23g)'/%3E%3Ccircle cx='900' cy='200' r='180' fill='url(%23h)'/%3E%3Ccircle cx='260' cy='500' r='220' fill='rgba(240,235,224,0.08)'/%3E%3Ccircle cx='700' cy='620' r='140' fill='rgba(255,255,255,0.04)'/%3E%3Ccircle cx='430' cy='220' r='60' fill='rgba(201,168,76,0.18)'/%3E%3C/svg%3E");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     animation: panImage 25s ease-in-out infinite alternate;
     will-change: background-position;
-    z-index: 0;
   }
-
-  @keyframes panImage { 0% { background-position: 0% center; } 100% { background-position: 100% center; } }
-
+  @keyframes panImage {
+    0%   { background-position: 0% center; }
+    100% { background-position: 100% center; }
+  }
+  /* Ensure carousel/slide elements also fill the hero area */
+  .hero-slide, .slide, .swiper-slide {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
   .hero-vignette {
     position: absolute; inset: 0; pointer-events: none;
     background:
       radial-gradient(ellipse at center, transparent 30%, rgba(13,15,26,0.55) 100%),
-      linear-gradient(to bottom, rgba(13,15,26,0.25) 0%, rgba(13,15,26,0.72) 80%, rgba(13,15,26,0.98) 100%),
-      linear-gradient(to right, rgba(13,15,26,0.4) 0%, transparent 20%, transparent 80%, rgba(13,15,26,0.4) 100%);
-    z-index: 3;
+      linear-gradient(to bottom, rgba(13,15,26,0.25) 0%, rgba(13,15,26,0.15) 40%, rgba(13,15,26,0.72) 80%, rgba(13,15,26,0.98) 100%),
+      linear-gradient(to right,  rgba(13,15,26,0.4) 0%, transparent 20%, transparent 80%, rgba(13,15,26,0.4) 100%);
   }
-
   .hero-shimmer {
-    position: absolute; inset: 0; pointer-events: none; z-index: 4;
+    position: absolute; inset: 0; pointer-events: none;
     background: radial-gradient(ellipse 60% 40% at 72% 22%, rgba(201,168,76,0.07) 0%, transparent 70%);
     animation: shimmer 6s ease-in-out infinite alternate;
   }
-
-  @keyframes shimmer { 0% { opacity: 0.5; } 100% { opacity: 1; } }
-
   /* fallback img inside hero-bg when CSS backgrounds misrender on some phones */
-  .hero-bg-img { position: absolute; inset: 0; width: 110%; height: 100%; left: -5%; object-fit: cover; display: none; z-index: 0; animation: panImage 25s ease-in-out infinite alternate; }
-
+  .hero-bg-img{ position:absolute; inset:0; width:110%; height:100%; left:-5%; object-fit:cover; display:block; z-index:0; animation: panImage 25s ease-in-out infinite alternate; will-change: transform; }
+  @keyframes shimmer { 0%{ opacity:0.5; } 100%{ opacity:1; } }
   #hero-canvas { position: absolute; inset: 0; pointer-events: none; width:100%; height:100%; z-index:5; }
 
-  .pulse-ring {/* Lines 61-65 omitted */}
-  @keyframes pulse-out {/* Lines 67-69 omitted */}
+  .pulse-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.2);
+    animation: pulse-out 4s ease-out infinite;
+    pointer-events: none;
+  }
+  @keyframes pulse-out {
+    0%   { transform: scale(0.8); opacity: 0.6; }
+    100% { transform: scale(1.8); opacity: 0;   }
+  }
 
-  /* ── hero nav ── */
-  .hero-nav {/* Lines 73-78 omitted */}
-  .nav-logo {/* Lines 80-82 omitted */}
+  /* â”€â”€ hero nav â”€â”€ */
+  .hero-nav {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.3rem 2rem;
+    gap: 1.6rem;
+    background: rgba(13,15,26,0.64);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+  }
+  .nav-logo {
+    font-family: "Playfair Display", serif; font-size: 1.25rem;
+    color: var(--parchment); letter-spacing: 1.5px; text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
   .nav-logo span { color: var(--gold); }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a {/* Lines 86-88 omitted */}
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; flex: 1; justify-content: center; }
+  .nav-links a {
+    font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(240,235,224,0.72); text-decoration: none; transition: color 0.25s;
+  }
   .nav-links a:hover { color: var(--gold); }
-  .admin-link {/* Lines 91-95 omitted */}
-  .admin-link:hover { color: var(--gold); border-color: var(--gold); }
+  .admin-link {
+    font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(240,235,224,0.78); text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.14); padding: 0.65rem 1.5rem;
+    border-radius: 999px; transition: all 0.25s;
+    background: rgba(255,255,255,0.04);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .admin-link:hover { color: var(--gold); border-color: rgba(255,255,255,0.28); background: rgba(255,255,255,0.08); }
 
-  /* ── hero content ── */
-  .hero-content {/* Lines 100-104 omitted */}
-  .hero-eyebrow {/* Lines 106-109 omitted */}
-  .hero-title {/* Lines 111-116 omitted */}
+  /* â”€â”€ hero content â”€â”€ */
+  .hero-content {
+    position: absolute; top: 50%; left: 50%; z-index: 10;
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 2.4rem 2.5rem;
+    width: 90%;
+    max-width: 900px;
+    /* make the panel invisible so the hero background is fully visible */
+    background: transparent;
+    border: none;
+    border-radius: 30px; /* keep shape but transparent */
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+  .hero-eyebrow {
+    font-weight: 300; font-size: 10px; letter-spacing: 5px; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 1rem;
+    animation: fadein 2s ease forwards; opacity: 0;
+  }
+  .hero-title {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2.8rem, 6vw, 56px);
+    font-weight: 700; color: var(--smoke); line-height: 1.04; margin-bottom: 0.75rem;
+    animation: fadein 2s ease 0.4s forwards; opacity: 0;
+    text-shadow: 0 18px 60px rgba(13,15,26,0.35);
+    max-width: 12ch;
+  }
   .hero-title em { font-style: italic; color: var(--gold); }
-  .hero-subtitle {/* Lines 119-123 omitted */}
-  .hero-divider {/* Lines 125-128 omitted */}
-  .hero-divider::before {/* Lines 130-133 omitted */}
-  .hero-cta {/* Lines 135-141 omitted */}
+  .hero-subtitle {
+    font-family: "Playfair Display", serif; font-style: italic;
+    font-size: clamp(0.95rem, 2vw, 16px); color: rgba(240,235,224,0.75);
+    margin-bottom: 2rem;
+    animation: fadein 2s ease 0.8s forwards; opacity: 0;
+    line-height: 1.7;
+    max-width: 42rem;
+  }
+  .hero-divider {
+    width: 72px; height: 1px; background: rgba(255,255,255,0.14);
+    margin: 0 auto 2rem; position: relative;
+    animation: fadein 2s ease 1s forwards; opacity: 0;
+  }
+  .hero-divider::before {
+    content:""; position:absolute; left:50%; top:50%;
+    transform:translate(-50%,-50%);
+    width:6px; height:6px; background:var(--gold); border-radius:50%;
+  }
+  .hero-cta {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--parchment);
+    border: 1px solid rgba(255,255,255,0.16); padding: 15px 44px;
+    border-radius: 999px; cursor: pointer; background: rgba(255,255,255,0.08);
+    animation: fadein 2s ease 1.2s forwards; opacity: 0;
+    transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
+    text-decoration: none; display: inline-block;
+  }
+  .hero-cta:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.24); transform: translateY(-1px); }
   .hero-cta:hover { background: rgba(107,27,58,0.55); border-color: var(--gold); color: var(--gold); }
-  .hero-scene-tag {/* Lines 144-146 omitted */}
+  .hero-scene-tag {
+    position: absolute; bottom: 1.2rem; right: 1.8rem; z-index: 10;
+    font-size: 9px; letter-spacing: 2px; color: rgba(201,168,76,0.35); text-transform: uppercase;
+  }
   @keyframes fadein { to { opacity: 1; } }
 
-  /* ══ LIBRARY ══ */
+  /* â•â• LIBRARY â•â• */
   .library { position: relative; z-index: 1; padding: 5rem 2.5rem 8rem; max-width: 1400px; margin: 0 auto; }
   .section-header { text-align: center; margin-bottom: 3.5rem; }
   .section-eyebrow { font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
@@ -96,11 +190,20 @@
 
   .stories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 2rem; }
 
-  .story-card {/* Lines 158-162 omitted */}
+  .story-card {
+    cursor: pointer; border-radius: 8px; overflow: hidden;
+    background: #13151f; border: 1px solid rgba(201,168,76,0.1);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    display: flex; flex-direction: column;
+  }
   .story-card:hover { transform: translateY(-8px); box-shadow: 0 24px 60px rgba(107,27,58,0.35), 0 0 0 1px rgba(201,168,76,0.3); }
   .story-cover { width:100%; aspect-ratio:2/3; object-fit:cover; display:block; transition: transform 0.5s ease; }
   .story-card:hover .story-cover { transform: scale(1.04); }
-  .story-cover-placeholder {/* Lines 167-170 omitted */}
+  .story-cover-placeholder {
+    width:100%; aspect-ratio:2/3;
+    background: linear-gradient(145deg,#1a1020,#2a0d1e,#0d1525);
+    display:flex; align-items:center; justify-content:center; font-size:3rem; color:var(--gold); opacity:0.4;
+  }
   .story-info { padding:1.1rem 1.2rem 1.4rem; flex:1; display:flex; flex-direction:column; gap:0.4rem; }
   .story-title { font-family:"Playfair Display",serif; font-size:1.05rem; font-weight:600; color:var(--smoke); line-height:1.3; }
   .story-meta { font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); opacity:0.7; }
@@ -111,11 +214,19 @@
   .empty-library .icon { font-size:3.5rem; opacity:0.2; margin-bottom:1.5rem; }
   .empty-library p { font-family:"Playfair Display",serif; font-style:italic; color:var(--text-dim); font-size:1.1rem; }
 
-  /* ══ MODAL / READER ══ */
-  .modal-overlay {/* Lines 183-185 omitted */}
+  /* â•â• MODAL / READER â•â• */
+  .modal-overlay {
+    display:none; position:fixed; inset:0; z-index:200;
+    background:rgba(13,15,26,0.93); backdrop-filter:blur(8px); overflow-y:auto;
+  }
   .modal-overlay.open { display:flex; flex-direction:column; }
   .modal-inner { max-width:860px; margin:0 auto; padding:6rem 2rem 8rem; width:100%; }
-  .modal-back {/* Lines 189-193 omitted */}
+  .modal-back {
+    display:inline-flex; align-items:center; gap:0.5rem;
+    font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--text-dim); background:none; border:none; cursor:pointer;
+    margin-bottom:3rem; transition:color 0.2s; padding:0;
+  }
   .modal-back:hover { color:var(--gold); }
   .parts-view .story-big-title { font-family:"Playfair Display",serif; font-size:clamp(2rem,5vw,3.5rem); font-weight:700; color:var(--smoke); margin-bottom:0.5rem; }
   .parts-view .story-big-desc { font-family:"Playfair Display",serif; font-style:italic; color:var(--text-light); font-size:1.1rem; margin-bottom:2.5rem; }
@@ -137,19 +248,101 @@
   .reading-body { font-size:1.05rem; line-height:1.9; color:var(--parchment); font-weight:300; max-width:680px; }
   .reading-body p { margin-bottom:1.4em; }
 
-  /* ══ FOOTER ══ */
+  /* â•â• FOOTER â•â• */
   footer { position:relative; z-index:1; text-align:center; padding:2.5rem; border-top:1px solid rgba(201,168,76,0.1); font-size:0.72rem; letter-spacing:0.12em; color:var(--text-dim); }
   footer span { color:var(--gold); font-family:"Playfair Display",serif; font-style:italic; }
 
-  /* ══ RESPONSIVE ══ */
-  @media(max-width:700px){/* Lines 221-245 omitted */}
+  /* â•â• RESPONSIVE â•â• */
+  @media(max-width:700px){
+    /* hero */
+    .hero { min-height: 100dvh; }
+    .hero-content { padding: 1.2rem 1.2rem 2rem; }
+    .hero h1 { font-size: clamp(2rem, 10vw, 3.5rem); }
+    .hero-subtitle { font-size: 0.78rem; }
 
-  @media(max-width:420px){/* Lines 248-250 omitted */}
+    /* library section */
+    .library { padding: 3rem 1.2rem 4rem; }
+    .section-label { font-size: 0.6rem; }
+
+    /* grid: single column on small phones, 2-col on wider small screens */
+    .stories-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+    .story-info { padding: 0.8rem 0.9rem 1rem; }
+    .story-title { font-size: 0.95rem; }
+
+    /* modal reader */
+    .modal-inner { padding: 2rem 1.2rem 4rem; }
+    .modal-back { margin-bottom: 1.5rem; min-height: 44px; }
+    .reading-body { font-size: 1rem; line-height: 1.8; }
+    .reading-cover { max-height: 260px; }
+    .parts-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+
+    /* footer */
+    footer { padding: 1.5rem 1rem; }
+  }
+
+  @media(max-width:420px){
+    .stories-grid { grid-template-columns: 1fr 1fr; }
+    .story-excerpt { display: none; }
+  }
+  @media (max-width: 700px) {
+    .hero-nav {
+      padding: 1.2rem 1.3rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .nav-logo { font-size: 1.05rem; letter-spacing: 1px; }
+    .nav-links { gap: 1rem; flex: 1 1 100%; justify-content: center; flex-wrap: wrap; }
+    .nav-links a { font-size: 9px; }
+    .admin-link { font-size: 9px; padding: 0.5rem 1rem; }
+    
+    .hero-bg{
+      inset: 0;
+      width: 100%;
+      height: 100% !important;
+      min-height: 100dvh !important;
+      background-size: cover !important;
+      background-repeat: no-repeat;
+      background-position: center center;
+      animation: panImage 25s ease-in-out infinite alternate;
+    }
+    /* remove heavy overlays on small screens so background fills cleanly */
+    .hero-vignette, .hero-shimmer { display: none !important; }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      /* ensure rendering engines fill and render properly on mobile */
+      background-attachment: scroll;
+      -webkit-transform: translateZ(0);
+      /* support both background-image and img fallback */
+      object-fit: cover;      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      animation: panImage 25s ease-in-out infinite alternate;
+      will-change: background-position;
+    }
+    .hero-subtitle{
+      font-size:0.9rem;
+      line-height:1.6;
+    }
+  }
+  img{
+    max-width:100%;
+    height:auto;
+  }
+  section{
+    overflow:hidden;
+  }
+  *{
+    word-wrap:break-word;
+  }
 </style>
 </head>
 <body>
 
-<!-- ══ HERO ══ -->
+<!-- â•â• HERO â•â• -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-vignette"></div>
@@ -158,45 +351,74 @@
 
   <!-- pulse rings over magical left area -->
   <div style="position:absolute;top:18%;left:18%;width:60px;height:60px;z-index:5;">
-    <!-- Lines 264-266 omitted -->
+    <div class="pulse-ring" style="width:60px;height:60px;animation-delay:0s;"></div>
+    <div class="pulse-ring" style="width:60px;height:60px;animation-delay:1.5s;"></div>
   </div>
   <!-- pulse ring near moon top-right -->
   <div style="position:absolute;top:15%;right:24%;width:50px;height:50px;z-index:5;">
-    <!-- Lines 269-271 omitted -->
+    <div class="pulse-ring" style="width:50px;height:50px;animation-delay:0.8s;border-color:rgba(201,168,76,0.15);"></div>
+    <div class="pulse-ring" style="width:50px;height:50px;animation-delay:2.3s;border-color:rgba(201,168,76,0.15);"></div>
   </div>
 
   <nav class="hero-nav">
-    <!-- Lines 274-280 omitted -->
+    <a class="nav-logo" href="index.html">Phantasy <span>Allure</span></a>
+    <ul class="nav-links">
+      <li><a href="#library">Library</a></li>
+      <li><a href="#library">New Tales</a></li>
+    </ul>
+    <a class="admin-link" href="admin.html">âœ¦ Author Portal</a>
   </nav>
 
   <div class="hero-content">
-    <!-- Lines 283-288 omitted -->
+    <div class="hero-eyebrow">A world of stories</div>
+    <h1 class="hero-title">Where stories<br>become <em>worlds</em></h1>
+    <p class="hero-subtitle">Romance. Magic. Darkness. Wonder.</p>
+    <div class="hero-divider"></div>
+    <a class="hero-cta" href="#library">Enter the library</a>
   </div>
+  <script>
+    // no JS fallback needed; the hero background is now an inline SVG URL and should render on phones.
+  </script>
 
   <div class="hero-scene-tag">shadows of stories untold</div>
 </section>
 
-<!-- ══ LIBRARY ══ -->
+<!-- â•â• LIBRARY â•â• -->
 <section class="library" id="library">
   <div class="section-header">
-    <!-- Lines 296-298 omitted -->
+    <div class="section-eyebrow">The Collection</div>
+    <h2 class="section-title">All Stories</h2>
   </div>
   <div class="stories-grid" id="stories-grid">
-    <!-- Lines 300-301 omitted -->
+    <div class="empty-library"><div class="icon">&#10022;</div><p>Loading stories&hellip;</p></div>
   </div>
 </section>
 
-<!-- ══ MODAL / READER ══ -->
+<!-- â•â• MODAL / READER â•â• -->
 <div class="modal-overlay" id="story-modal">
   <div class="modal-inner">
-    <!-- Lines 307-322 omitted -->
+    <button class="modal-back" id="modal-back-btn">&#8592; Back to Library</button>
+    <div class="parts-view" id="parts-view">
+      <h2 class="story-big-title" id="modal-story-title"></h2>
+      <p class="story-big-desc" id="modal-story-desc"></p>
+      <div class="parts-divider"></div>
+      <div class="parts-grid" id="parts-grid"></div>
+    </div>
+    <div class="reading-view" id="reading-view">
+      <div class="reading-header">
+        <div class="reading-eyebrow" id="reading-eyebrow"></div>
+        <h2 class="reading-title" id="reading-title"></h2>
+      </div>
+      <img class="reading-cover" id="reading-cover" src="" alt="" style="display:none"/>
+      <div class="reading-body" id="reading-body"></div>
+    </div>
   </div>
 </div>
 
 <footer>&copy; <span>Phantasy Allure</span> &mdash; All stories are original works</footer>
 
 <script>
-// ── HERO PARTICLES ──
+// â”€â”€ HERO PARTICLES â”€â”€
 (function(){
   const canvas = document.getElementById("hero-canvas");
   const hero   = canvas.parentElement;
@@ -204,39 +426,71 @@
   resize(); window.addEventListener("resize", resize);
   const ctx = canvas.getContext("2d");
   const pts = Array.from({length:38}, ()=>({
-    /* Lines 336-341 omitted */
+    x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+    size: Math.random()*1.8+0.4, speed: Math.random()*0.4+0.15,
+    dx: (Math.random()-0.5)*0.4, opacity: 0,
+    maxOpacity: Math.random()*0.55+0.2,
+    phase: Math.random()*Math.PI*2,
     gold: Math.random()>0.45
   }));
   (function draw(){
-    /* Lines 344-354 omitted */
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pts.forEach(p=>{
+      p.y -= p.speed;
+      p.x += p.dx + Math.sin(p.phase + p.y*0.01)*0.3;
+      p.opacity = Math.min(p.maxOpacity, p.opacity+0.008);
+      if(p.y < -10){ p.y=canvas.height+10; p.x=Math.random()*canvas.width; p.opacity=0; }
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+      ctx.fillStyle = p.gold ? `rgba(201,168,76,${p.opacity})` : `rgba(240,235,224,${p.opacity*0.7})`;
+      ctx.fill();
+    });
     requestAnimationFrame(draw);
   })();
 })();
 
-// ── DATA ──
+// â”€â”€ DATA â”€â”€
 let allStories = [];
 
 async function loadStories(){
   const grid = document.getElementById("stories-grid");
   try {
-    /* Lines 364-366 omitted */
+    const res = await fetch("/api/stories");
+    if(!res.ok) throw new Error("Request failed with status " + res.status);
     allStories = await res.json();
-  } catch(err){/* Lines 368-371 omitted */}
+  } catch(err){
+    console.error("Failed to load stories:", err);
+    grid.innerHTML = `<div class="empty-library"><div class="icon">&#10022;</div><p>Couldn't reach the library right now. Please try again shortly.</p></div>`;
+    return;
+  }
   renderLibrary();
 }
 
 function getStories(){ return allStories; }
 
-// ── RENDER LIBRARY ──
+// â”€â”€ RENDER LIBRARY â”€â”€
 function renderLibrary(){
   const grid = document.getElementById("stories-grid");
   const stories = getStories().filter(s=>s.published);
-  if(!stories.length){/* Lines 382-384 omitted */}
+  if(!stories.length){
+    grid.innerHTML = `<div class="empty-library"><div class="icon">&#10022;</div><p>The library awaits its first story&hellip;</p></div>`;
+    return;
+  }
   grid.innerHTML = stories.map(s=>{
+    const img = s.cover ? `<img class="story-cover" src="${s.cover}" alt="${s.title}"/>` : `<div class="story-cover-placeholder">&#10022;</div>`;
+    const lbl = s.parts && s.parts.length>1 ? `${s.parts.length} parts` : "Single story";
+    return `<div class="story-card" onclick="openStory('${s.id}')">
+      ${img}
+      <div class="story-info">
+        <div class="story-title">${s.title}</div>
+        <div class="story-meta">${s.genre||"Fantasy"}</div>
+        <div class="story-excerpt">${(s.description||"").slice(0,80)}${(s.description||"").length>80?"&hellip;":""}</div>
+        <div class="story-parts-badge">&#10022; ${lbl}</div>
+      </div>
+    </div>`;
   }).join("");
 }
 
-// ── MODAL ──
+// â”€â”€ MODAL â”€â”€
 let currentStory=null;
 function openStory(id){
   const story=getStories().find(s=>s.id===id); if(!story) return;
@@ -248,14 +502,21 @@ function openStory(id){
   document.getElementById("modal-back-btn").dataset.mode="close";
   if(!story.parts||story.parts.length===0){ openReading(story,null); }
   else if(story.parts.length===1){ openReading(story,story.parts[0]); }
-  else {/* Lines 413-419 omitted */}
+  else {
+    document.getElementById("modal-story-title").textContent=story.title;
+    document.getElementById("modal-story-desc").textContent=story.description||"";
+    document.getElementById("parts-grid").innerHTML=story.parts.map((p,i)=>{
+      const cov=p.cover?`<img class="part-cover" src="${p.cover}" alt="${p.title}"/>`:`<div class="part-cover-placeholder">&#10022;</div>`;
+      return `<div class="part-card" onclick="openReading(currentStory,currentStory.parts[${i}])">${cov}<div class="part-info"><div class="part-label">Part ${i+1}</div><div class="part-name">${p.title}</div></div></div>`;
+    }).join("");
+  }
 }
 function openReading(story,part){
   document.getElementById("parts-view").style.display="none";
   document.getElementById("reading-view").classList.add("active");
   document.getElementById("modal-back-btn").dataset.mode=story.parts&&story.parts.length>1?"parts":"close";
   const c=part||story;
-  document.getElementById("reading-eyebrow").textContent=story.title+(part?" · "+part.title:");
+  document.getElementById("reading-eyebrow").textContent=story.title+(part?" Â· "+part.title:"");
   document.getElementById("reading-title").textContent=c.title||story.title;
   const ce=document.getElementById("reading-cover");
   if(c.cover){ ce.src=c.cover; ce.style.display="block"; } else { ce.style.display="none"; }
@@ -264,9 +525,13 @@ function openReading(story,part){
 }
 document.getElementById("modal-back-btn").addEventListener("click",function(){
   if(this.dataset.mode==="parts"){
-    /* Lines 435-437 omitted */
+    document.getElementById("reading-view").classList.remove("active");
+    document.getElementById("parts-view").style.display="";
     this.dataset.mode="close";
-  } else {/* Lines 439-441 omitted */}
+  } else {
+    document.getElementById("story-modal").classList.remove("open");
+    document.body.style.overflow=""; currentStory=null;
+  }
 });
 document.getElementById("story-modal").addEventListener("click",function(e){
   if(e.target===this){ this.classList.remove("open"); document.body.style.overflow=""; currentStory=null; }
