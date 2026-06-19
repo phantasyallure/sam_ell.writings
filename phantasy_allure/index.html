@@ -400,6 +400,40 @@
     });
   </script>
 
+  <!-- debug badge: shows computed hero-bg info (remove after troubleshooting) -->
+  <div id="hero-debug" style="position:fixed;right:12px;bottom:12px;z-index:99999;background:rgba(0,0,0,0.7);color:#fff;padding:8px 10px;border-radius:8px;font-size:12px;line-height:1.2;max-width:220px;">hero debug...</div>
+  <script>
+    (function(){
+      function update(){
+        var bg = document.querySelector('.hero-bg');
+        var dbg = document.getElementById('hero-debug');
+        if(!dbg) return;
+        if(!bg){ dbg.innerText = 'no .hero-bg element'; return; }
+        var cs = getComputedStyle(bg);
+        var bgi = cs.backgroundImage || 'none';
+        var imgs = bg.querySelectorAll('.hero-bg-img').length;
+        var rect = bg.getBoundingClientRect();
+        dbg.innerHTML = ''+
+          'bgImage: '+(bgi==='none' ? 'none' : (bgi.length>80? 'data-url' : bgi))+'<br/>'+
+          'img children: '+imgs+'<br/>'+
+          'size: '+Math.round(rect.width)+'x'+Math.round(rect.height)+'px';
+      }
+      document.addEventListener('DOMContentLoaded', function(){ update(); setTimeout(update,800); setTimeout(update,1500); });
+    })();
+  </script>
+
+    <script>
+      // If a decoded external image exists, prefer it (helps mobile browsers)
+      (function(){
+        fetch('./hero-bg.jpg', { method: 'HEAD' }).then(function(res){
+          if(res.ok){
+            var bg = document.querySelector('.hero-bg');
+            if(bg) bg.style.backgroundImage = "url('./hero-bg.jpg')";
+          }
+        }).catch(function(){ /* ignore */ });
+      })();
+    </script>
+
   <div class="hero-scene-tag">shadows of stories untold</div>
 </section>
 
