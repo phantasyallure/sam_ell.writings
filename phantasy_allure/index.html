@@ -29,13 +29,38 @@
   .hero-bg {
     position: absolute;
     inset: -8% -5%; width: 110%; height: 116%;
-    /* Lines 32-37 omitted */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMidYMid slice' viewBox='0 0 1200 800'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%230d0f1a'/%3E%3Cstop offset='55%25' stop-color='%232b0f31'/%3E%3Cstop offset='100%25' stop-color='%235a1b47'/%3E%3C/linearGradient%3E%3CradialGradient id='h' cx='0.3' cy='0.3' r='0.8'%3E%3Cstop offset='0%25' stop-color='rgba(201,168,76,0.35)'/%3E%3Cstop offset='100%25' stop-color='transparent'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='1200' height='800' fill='url(%23g)'/%3E%3Ccircle cx='900' cy='200' r='180' fill='url(%23h)'/%3E%3Ccircle cx='260' cy='500' r='220' fill='rgba(240,235,224,0.08)'/%3E%3Ccircle cx='700' cy='620' r='140' fill='rgba(255,255,255,0.04)'/%3E%3Ccircle cx='430' cy='220' r='60' fill='rgba(201,168,76,0.18)'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    animation: panImage 25s ease-in-out infinite alternate;
+    will-change: background-position;
+    z-index: 0;
   }
-  @keyframes kenburns {/* Lines 39-44 omitted */}
+
+  @keyframes panImage { 0% { background-position: 0% center; } 100% { background-position: 100% center; } }
+
   .hero-vignette {
-  .hero-shimmer {/* Lines 53-56 omitted */}
-  @keyframes shimmer { 0%{ opacity:0.5; } 100%{ opacity:1; } }
-  #hero-canvas { position: absolute; inset: 0; pointer-events: none; width:100%; height:100%; }
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse at center, transparent 30%, rgba(13,15,26,0.55) 100%),
+      linear-gradient(to bottom, rgba(13,15,26,0.25) 0%, rgba(13,15,26,0.72) 80%, rgba(13,15,26,0.98) 100%),
+      linear-gradient(to right, rgba(13,15,26,0.4) 0%, transparent 20%, transparent 80%, rgba(13,15,26,0.4) 100%);
+    z-index: 3;
+  }
+
+  .hero-shimmer {
+    position: absolute; inset: 0; pointer-events: none; z-index: 4;
+    background: radial-gradient(ellipse 60% 40% at 72% 22%, rgba(201,168,76,0.07) 0%, transparent 70%);
+    animation: shimmer 6s ease-in-out infinite alternate;
+  }
+
+  @keyframes shimmer { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+
+  /* fallback img inside hero-bg when CSS backgrounds misrender on some phones */
+  .hero-bg-img { position: absolute; inset: 0; width: 110%; height: 100%; left: -5%; object-fit: cover; display: none; z-index: 0; animation: panImage 25s ease-in-out infinite alternate; }
+
+  #hero-canvas { position: absolute; inset: 0; pointer-events: none; width:100%; height:100%; z-index:5; }
 
   .pulse-ring {/* Lines 61-65 omitted */}
   @keyframes pulse-out {/* Lines 67-69 omitted */}
@@ -133,19 +158,19 @@
 
   <!-- pulse rings over magical left area -->
   <div style="position:absolute;top:18%;left:18%;width:60px;height:60px;z-index:5;">
-    /* Lines 264-266 omitted */
+    <!-- Lines 264-266 omitted -->
   </div>
   <!-- pulse ring near moon top-right -->
   <div style="position:absolute;top:15%;right:24%;width:50px;height:50px;z-index:5;">
-    /* Lines 269-271 omitted */
+    <!-- Lines 269-271 omitted -->
   </div>
 
   <nav class="hero-nav">
-    /* Lines 274-280 omitted */
+    <!-- Lines 274-280 omitted -->
   </nav>
 
   <div class="hero-content">
-    /* Lines 283-288 omitted */
+    <!-- Lines 283-288 omitted -->
   </div>
 
   <div class="hero-scene-tag">shadows of stories untold</div>
@@ -154,17 +179,17 @@
 <!-- ══ LIBRARY ══ -->
 <section class="library" id="library">
   <div class="section-header">
-    /* Lines 296-298 omitted */
+    <!-- Lines 296-298 omitted -->
   </div>
   <div class="stories-grid" id="stories-grid">
-    /* Lines 300-301 omitted */
+    <!-- Lines 300-301 omitted -->
   </div>
 </section>
 
 <!-- ══ MODAL / READER ══ -->
 <div class="modal-overlay" id="story-modal">
   <div class="modal-inner">
-    /* Lines 307-322 omitted */
+    <!-- Lines 307-322 omitted -->
   </div>
 </div>
 
