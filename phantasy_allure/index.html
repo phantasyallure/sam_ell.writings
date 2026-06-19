@@ -125,11 +125,12 @@
     text-align: center; padding: 2.4rem 2.5rem;
     width: 90%;
     max-width: 900px;
-    background: rgba(13,15,26,0.52);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 30px;
-    box-shadow: 0 32px 90px rgba(0,0,0,0.28);
-    backdrop-filter: blur(18px);
+    /* make the panel invisible so the hero background is fully visible */
+    background: transparent;
+    border: none;
+    border-radius: 30px; /* keep shape but transparent */
+    box-shadow: none;
+    backdrop-filter: none;
   }
   .hero-eyebrow {
     font-weight: 300; font-size: 10px; letter-spacing: 5px; color: var(--gold);
